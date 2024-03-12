@@ -1,6 +1,6 @@
 # rgbd_imu_nav
 
-## Segment-Based Mapping and Localization Pipeline Overview.
+## Segment-Based Mapping and Localization Pipeline Overview
 <img width="1109" alt="diagram_whole" src="https://github.com/khimaira42/rgbd_imu_nav/assets/94995610/da1cbddb-cd21-43af-b0f7-2e51b39f220b">
 
 ## Semantic Mapping from RGB-D Data
