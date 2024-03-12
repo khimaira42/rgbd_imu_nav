@@ -1,0 +1,54 @@
+\chapter{Related work}
+
+The implementation of RGB-D cameras presents a significant advantage, especially in the creation of global maps rich in visual information, crucial for \acrshort{uav} navigation. Although \acrshort{lidar} systems offer high accuracy and consistent performance across different lighting and weather conditions\cite{segmap}, they lack color information and are often more expensive than RGB-D systems. These limitations position RGB-D cameras as a viable alternative, particularly in small-scale environments like indoor warehouses. A novel approach for autonomous \acrshort{uav} navigation using RGB-D data in GNSS-denied environments is presented in\cite{7152290}, focusing on 3D marker recognition for precise pose estimation and emphasizing algorithms optimized for real-time application with minimal computational burden. 
+
+Semantic mapping leverages the full potential of RGB-D data by utilizing both color and depth information. The development of 3D semantic maps for indoor settings using RGB-D data is explored in \cite{Zhao2016Building3S}, presenting methods for integrating rich semantic details into indoor small-scale maps to enhance robot navigation and interaction in complex environments. Additionally, \cite{qi2018frustum} introduces a novel deep learning approach for 3D object detection, the Frustum PointNets framework, which effectively combines 2D object detection with advanced 3D deep learning techniques for object localization in large-scale scenes.
+
+Segment-based localization in a global map using 3D point clouds is another area of focus. The study in \cite{segmatch2017} delves into the robustness of this approach against environmental changes and variations in illumination. It presents a solution to localization and mapping challenges by extracting segments from 3D point clouds. The method described in \cite{segmap} for 3D segment mapping using data-driven descriptors proves efficient in object localization in point clouds and precise 3D bounding box estimation, surpassing existing methods in standard benchmarks. The integration of semantic information from RGB imagery into maps generated from \acrshort{lidar} systems is further investigated in \cite{cramariuc2021semsegmap}, emphasizing the importance of semantic understanding in robotics. 
+
+
+Intel® RealSense™ Depth Camera D455 
+Holybro Pixhawk 4 
+Holybro X500 V2
+LattePanda 3 Delta
+Ubuntu 20.04
+ROS noetic
+\subsection{COCO Annotation}
+COCO Annotator is a web-based image annotation tool designed for versatility and efficiently label images to create training data for image localization and object detection\cite{cocoannotator}. It was used to create a dataset with 7 categories. Polygon tool is used to label image segments and finally customized annotations of dataset was exported with the well-known COCO format\cite{mscoco}.
+\subsection{MMDetection}
+MMDetection is an open source object detection toolbox based on PyTorch\cite{mmdetection}. There are a lot pre-defined models that I can train with customized dataset. After training, this can also help me generate prediction file including masks of instance segmentation and labels.
+\subsection{Mask R-CNN}
+Mask R-CNN is a conceptually simple, flexible, and general framework for object instance segmentation\cite{he2018mask}. R-50-FPN is used as backbone in this thesis.
+\subsection{3D Motion Capture}
+The motion capture system at the \acrfull{asta} is a 16-camera system that covers a volume of 10x14x7 meters. The system is utilized to track the motion of up to 14 robotic systems on land and in air. The system is situated in a confined area of the facility.
+\subsection{Segmappy}
+SegMap is a map representation based on 3D segments allowing for robot localization, environment reconstruction, and semantics extraction\cite{segmap,segmap2,segmatch2017}. In this research, only segmappy is used to train a new CNN model which could predict descriptor for each point cloud or segment.
+\subsection{Matching Strategies}
+Minkowski distance of descriptors, euclidean distance of centroids and label difference are used in my thesis to find the nearest descriptor in global map by matching with local segment.
+\subsection{Extended Kalman Filter}
+The \acrfull{ekf} in this thesis is designed for real-time state estimation in systems with non-linear dynamics, such as \acrshort{uavs}. It estimates a state vector including position, orientation, and velocity, using data from IMU and RGB-D camera. The EKF handles the non-linear nature of drone movement by making linear approximations at each step. It's key for precise navigation and control, crucial in complex, dynamic environments. This implementation is characterized by its adaptability, allowing for fine-tuning to match specific drone characteristics and operating conditions.
+
+\section{Thesis overview}
+
+The thesis is structured as follows(need to be edited):
+\begin{enumerate}
+\item Chapter 1 introduces the topic and sets the stage for the research.
+\item Chapter 2 reviews the relevant literature and existing technologies in UAV navigation.
+\item Chapter 3 details the methods and tools used, including the integration of RGB-D cameras and AI techniques.
+\item Chapter 4 presents the developed datasets and explains the process of semantic mapping.
+\item Chapter 5 evaluates the effectiveness of the proposed solutions through various tests and scenarios.
+\item Chapter 6 concludes the thesis, summarizing findings and suggesting future research directions.
+\end{enumerate}
+
+\subsection*{Importance in 3D Mapping and Aerial Robotics}
+
+\begin{enumerate}
+    \item \textbf{Precise Localization}: Accurate transformation from camera or IMU to drone to world frame is crucial for precise localization in aerial mapping and robotics.
+    \item \textbf{Motion Understanding}: The IMU provides crucial data on the drone's motion, which, when transformed accurately to the world frame, allows for effective navigation and stabilization.
+    \item \textbf{Data Fusion}: This transformation is essential for fusing data captured by the drone-mounted camera with IMU data in this thesis.
+    \item \textbf{Autonomous Navigation}: For drones, it's critical to understand their position and orientation in the world frame for autonomous navigation and operations.
+    \item \textbf{3D Reconstruction}: Accurate frame transformations are vital for creating precise 3D map reconstructions from aerial imagery.
+    \item \textbf{Sensor Integration}: Accurate frame transformations are vital for integrating the IMU data with the visual data from the camera, enhancing the overall system's perception and interaction capabilities.
+\end{enumerate}    
+\subsection{Visualization of Frames}
+\clearpage

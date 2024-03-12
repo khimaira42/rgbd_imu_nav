@@ -1,0 +1,122 @@
+\chapter{Introduction}
+
+\section{Background and Motivation}
+
+\acrfull{uavs}, commonly known as drones, have seen a meteoric rise in various sectors, revolutionizing practices in fields ranging from agriculture\cite{agri_review}, disaster management\cite{disaster_review}, surveillance\cite{surveillance}, to logistics\cite{logistics}. The flexibility, reduced operational costs, and unique aerial capabilities of \acrshort{uavs} have made them indispensable tools in modern technology landscapes. Their applications extend from precision agriculture, where they are used for crop monitoring and spraying, to search and rescue missions in disaster-struck areas, offering rapid, real-time information and accessibility to otherwise unreachable zones\cite{agri_review,disaster_review}.
+
+A critical aspect of \acrshort{uav} is their ability to navigate accurately in diverse environments. Traditionally, \acrshort{uavs} navigation has relied on \acrfull{imu}, \acrfull{gnss}\cite{gps_fusion}, and other \acrfull{rf}\cite{rf1,gnss_denied_uwb_indoor} technologies. However, these systems often face limitations in signal-compromised environments, such as indoors or dense urban areas. Urban environments, with their high-rise buildings, create 'urban canyons' that significantly disrupt \acrshort{gnss} signals. Similarly, indoor environments, dense forests, and subterranean settings like tunnels and caves present environments where \acrshort{gnss} signals are weak or non-existent. The reliance on these traditional navigation systems thus poses a significant limitation to the operational capacity of \acrshort{uavs} in these scenarios. To overcome these challenges, the integration of alternative technologies, including RGB-D cameras, optical sensors, and \acrfull{lidar}, has become increasingly prevalent\cite{gnss_denied_review,gps_denied_review}. RGB-D cameras provide rich visual and depth data, allowing for enhanced spatial awareness and object recognition capabilities. LiDAR technology, known for its precision in distance measurement and its ability to operate in a variety of lighting conditions, offers an additional layer of environmental understanding\cite{segmap}. LiDAR lack color information and are often more expensive than RGB-D systems. These limitations position RGB-D cameras as a viable alternative, particularly in small-scale environments like indoor environment\cite{rgbd_indoor}. 
+
+The fusion of sensors has yielded promising results, particularly in vision-based methods employing cost-effective and versatile visual sensors, which have demonstrated substantial advantages in \acrshort{uav} navigation\cite{survey_uav_nav,}. Extensive research focusing on visual localization\cite{visual_localization}, obstacle avoidance\cite{obstacle_av}, and path planning\cite{path_plan} has further underlined the critical role of visual navigation in this field. The research\cite{fusion_rgbd1} propose a system to estimate UAV position by fusing data from IMU and RGB-D sensor, which improve the reliability of UAV system. Another approach for autonomous \acrshort{uav} navigation using RGB-D data in GNSS-denied environments is presented in\cite{7152290}, focusing on 3D marker recognition for precise pose estimation and emphasizing algorithms optimized for real-time application with minimal computational burden. 
+
+The integration of \acrfull{ai} plays a crucial role in enhancing UAV navigation capabilities. The growing significance of \acrshort{ai} in improving both efficiency and effectiveness of \acrshort{uav} is highlighted in \cite{AI_UAV_review}. AI enhances UAV navigation tasks by enabling more autonomous and precise operations. For instance, AI algorithms can analyze environmental data to optimize flight paths, reduce energy consumption, and ensure safety in complex scenarios. The use of AI also allows UAVs to perform intricate tasks such as search and rescue operations\cite{ai_disa} and agricultural perceptiopn\cite{ai_agri} with greater accuracy and efficiency.
+
+An advanced application of AI in UAV is semantic mapping. It leverages the full potential of RGB-D data by utilizing both color and depth information. The development of 3D semantic maps for indoor settings using RGB-D data is explored in \cite{Zhao2016Building3S}, presenting methods for integrating rich semantic details into indoor small-scale maps to enhance robot navigation and interaction in complex environments. Additionally, \cite{qi2018frustum} introduces a novel deep learning approach for 3D object detection, the Frustum PointNets framework, which effectively combines 2D object detection with advanced 3D deep learning techniques for object localization in large-scale scenes.
+
+To further utilize AI in UAV navigation task, segment-based localization in a global map using 3D point clouds is an area of focus. The study in \cite{segmatch2017} delves into the robustness of this approach against environmental changes and variations in illumination. It presents a solution to localization and mapping challenges by extracting segments from 3D point clouds. The method described in \cite{segmap} for 3D segment mapping using data-driven descriptors proves efficient in object localization in point clouds and precise 3D bounding box estimation, surpassing existing methods in standard benchmarks. The integration of semantic information from RGB imagery into maps generated from \acrshort{lidar} systems is further investigated in \cite{cramariuc2021semsegmap}, emphasizing the importance of semantic understanding in robotics. 
+
+\section{Problem Statement}
+
+The primary challenge addressed in this thesis is the limitation of traditional navigation systems in \acrshort{uav} operations within signal-compromised or temperaly denied environments like gnss. When lacking of those sensors' aided, drift and noise from IMU will accumulate and impede the effective deployment of \acrshort{uavs} in critical applications where precision and reliability are paramount. In this case, the RGB-D aided system, where we assume that the IMU has been working normally, is capable of coping with this situation. Fusion of RGB-D visual data and IMU data can significantly improve the robustness of the UAV navigation system.
+
+\section{Project Scope and Objectives}
+The scope of this project encompasses the development of advanced navigation systems for \acrshort{uavs}, it includes preparing dataset of landmarks, developing 2 deep learnig for 2D instance segmentation and 3D point cloud featrue extraction, mapping 3D semantic map, pose estimation in a prior map by leveraging the integration of RGB-D cameras and IMU
+The objectives are:
+\begin{itemize}
+\item To prepare a dataset with annotated landmarks.
+\item To train deep learning models for 2D instance segmentation and descriptor extraction of 3D segment.
+\item To build a global 3D semantic map of the test environment.
+\item to develop matching and localization algorithms between local and global map.
+\item To develop an \acrfull{ekf} to fuse RGB-D sensor and IMU sensor for improved navigation
+\end{itemize}
+
+\section{Methods and Tools}
+
+This section provides a summary of the comprehensive approach to UAV navigation focusing on segment-based mapping and localization in GNSS-denied environments. The methodology encompasses various stages, from data acquisition to real-time pose estimation, leveraging advanced computer vision and sensor fusion techniques.
+
+\subsection{Data Collection and Preparation}
+
+\begin{itemize}
+    \item Environment Setup: Customized dataset in an indoor environment with specific categories.
+    \item Ground Truth Acquisition: Utilizes a 3D motion capture system.
+    \item IMU and RGB-D Data Collection: Drone Holybro X500 V2 equipped with an IMU and an Intel RealSense Depth Camera D455.
+    \item Image Annotation: Manual annotation of RGB images using COCO Annotator\cite{cocoannotator}.
+\end{itemize}
+
+\subsection{2D Instance Segmentation}
+
+\begin{itemize}
+    \item Model: Mask R-CNN\cite{he2018mask} with the mmdetection toolbox\cite{mmdetection}.
+    \item Backbone: ResNet-50 with Feature Pyramid Network (FPN)\cite{he2018mask}.
+    \item Training: Implemented on \acrfull{hpc} facilities.
+\end{itemize}
+
+\subsection{Segment Generation}
+\begin{itemize}
+    \item Process: Combining 2D segmented data with depth information.
+    \item Transformation: Conversion from camera to world frame using transformation matrices.
+\end{itemize}
+
+\subsection{Descriptor Extraction}
+\begin{itemize}
+    \item CNN Model: Adaptation of the SegMap's CNN model\cite{segmmappy} in TensorFlow 2.x.
+    \item Preprocessing: Filtering and downsampling using Open3D.
+    \item HPC Training: Training on DTU's \acrshort{hpc} facilities.
+\end{itemize}
+
+\subsection{Global and Local Map Generation}
+\begin{itemize}
+    \item Global Map: Created from point clouds in the world frame.
+    \item Local Map: Generated in real-time using IMU data for pose estimation.
+\end{itemize}
+
+\subsection{Real-Time Pose Estimation with \acrshort{imu}}
+\begin{itemize}
+    \item Integration: Fusion of \acrshort{imu} data for real-time pose estimation.
+    \item Algorithm: Use of an \acrshort{elf} for sensor fusion.
+\end{itemize}
+
+\subsection{Matching Strategy in a Prior Map}
+\begin{itemize}
+    \item Approach: Matching local map segments with the global map.
+\end{itemize}
+
+\subsection{Segment-Based Pose Estimation}
+\begin{itemize}
+    \item EKF: Refinement of pose estimation by fusing visual data with IMU data.
+\end{itemize}
+
+\subsection{Evaluation and Analysis}
+\begin{itemize}
+    \item Performance Analysis: Evaluates the accuracy of sensor fusion algorithms.
+    \item Challenges and Limitations: Addresses difficulties in segment-based localization and sensor fusion.
+\end{itemize}
+
+
+\subsection{Tools and Software}
+\begin{itemize}
+\item Software: Includes COCO Annotator, mmdetection, Open3D, TensorFlow, and ROS.
+\item HPC Resources: Utilization of DTU's High Performance Computing facilities.
+\end{itemize}
+
+\subsection{Real-World data Implications}
+\begin{itemize}
+\item \textbf{Application Scope:} Potential in autonomous UAV navigation in indoor or GNSS-denied environments.
+\end{itemize}
+
+\section{Novelty and contributions}
+The key contributions of this thesis include:
+\begin{itemize}
+    \item The development of 2 datasets for landmarks including images with COCO format\cite{mscoco} labels and 3D segments with global positions.
+    \item The integration of RGB-D based semantic mapping.
+    \item The successful implementation of segment-based matching and localization, demonstrating its effectiveness in practical scenarios.
+    \item Sensor fusion of RGB-D and IMU for enhancing \acrshort{uav} navigation.
+\end{itemize}
+
+
+
+
+
+
+
+
+

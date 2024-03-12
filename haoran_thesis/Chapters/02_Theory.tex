@@ -1,0 +1,161 @@
+\chapter{Technical Concepts}
+
+\section{Control and Communication of UAV}
+\textbf{PX4} is an open-source flight control software for drones and other unmanned vehicles. It's highly configurable and supports a wide range of aircraft types. In the context of IMU data, PX4 plays a crucial role as it interfaces directly with the drone's hardware sensors to gather data such as acceleration, gyro and their bias.
+
+\textbf{QGroundControl} is a ground control station software that provides full flight control and mission planning for any MAVLink-enabled drone. It offers an intuitive user interface to interact with PX4. When it comes to IMU data, QGroundControl can be used to visualize this data in real-time or to adjust settings and calibrations related to the IMU sensors on the drone.
+
+\textbf{MAVLink (Micro Air Vehicle Link)} is a lightweight communication protocol between drones and a ground control station. It plays a pivotal role in the pipeline by acting as the communication bridge. MAVLink facilitates the transfer of IMU data from the PX4 flight controller to QGroundControl in real-time. It ensures that the data packets are small and efficient, crucial for maintaining robust and responsive communication, especially in dynamic flying environments.
+
+
+\section{2D Instance Segmentation}
+2D instance segmentation is a computer vision task that involves identifying and delineating each distinct object of interest appearing in an image. Unlike simple object detection that just locates and classifies objects (often with bounding boxes), instance segmentation goes further by precisely outlining the shape of each object. This is done at the pixel level, making it a more detailed and complex task than basic detection or classification.
+\section{High Performance Computing}
+HPC refers to the use of supercomputers and parallel processing techniques for running advanced applications efficiently, reliably, and quickly. This typically involves harnessing the power of multiple computers to perform complex calculations.
+
+For the perspective of this thesis, HPC involves the use of a single GPU in a HPC cluster at the DTU, with each core and its RAM customised, along with settings for the runtime wall and the CUDA used for Tensorflow.
+\section{Mask R-CNN}
+\textbf{Mask R-CNN (Region-based Convolutional Neural Network)} is a state-of-the-art model for instance segmentation that extends the capabilities of Faster R-CNN, a model known for its efficiency in object detection. 
+
+This thesis employed the Mask R-CNN framework, using the mmdetection\cite{mmdetection} toolbox, to conduct instance segmentation on a customized dataset. The configuration of this model is meticulously tailored to suit the specific requirements of my research.
+
+The model utilizes the ResNet-50 architecture as its backbone combined with a Feature Pyramid Network (FPN). This setup allows for effective feature extraction at multiple scales, which is crucial for accurately detecting and segmenting objects of varying sizes. The ResNet-50 backbone, known for its depth and robustness, helps in capturing complex features, while the FPN enhances the model's ability to handle objects at different scales, thereby improving overall segmentation accuracy.
+
+\subsection{Model Evaluation}
+\textbf{Mask Loss: }This metric measures how well the model is predicting the segmentation masks as compared to the ground truth during training. Lower mask loss indicates better performance in terms of the model's segmentation capabilities. 
+
+\textbf{Accuracy:} This represents the model's ability to correctly classify the objects it detects. It's a crucial metric for understanding the classification performance of the model. 
+
+\textbf{Learning Rate:} The learning rate dictates the size of the steps the model takes during optimization. A higher learning rate allows the model to learn faster, but it can overshoot the minimum loss. A lower learning rate ensures more precise convergence but can slow down the training.
+
+\textbf{The mean Average Precision (mAP)} is a common metric used to evaluate the performance of models in object detection tasks, including both bounding box prediction and instance segmentation. The "bbox" refers to bounding box detection metrics, and "segm" refers to segmentation metrics. Each of these tasks has different challenges and the mAP helps to quantify how well a model performs on each.
+
+\textbf{Bounding Box mAP (bbox mAP):} This metric measures the accuracy of the predicted bounding boxes against the ground truth boxes. The average precision is calculated for each class and then averaged over all classes. 
+
+\textbf{Segmentation mAP (segm mAP): }This metric is used for instance segmentation tasks, where the model predicts not only the bounding box but also the pixel-wise mask of each object. The segm mAP thus measures the accuracy of the overlap between the predicted mask and the ground truth mask for each object instance.
+
+\textbf{mAP at IoU=0.50 (mAP @0.50):} IoU, or Intersection over Union, is a measure of the overlap between the predicted box/mask and the ground truth. An IoU of 0.50 means that the overlap must be at least 50\% for a prediction to be considered correct. This threshold is more lenient and is generally easier for models to achieve.
+
+\textbf{mAP at IoU=0.75 (mAP @0.75): }A more stringent measure of performance is the mAP at an IoU of 0.75, which requires the predicted box/mask to overlap the ground truth by at least 75\%. Achieving high scores at this threshold indicates a more precise model, as it must produce predictions that are very close to the ground truth.
+
+\section{Coordinates Frames}
+Transformation between different frames, such as the camera frame and the world frame, is a fundamental concept in robotics, computer vision, and related fields. This process involves translating and rotating points from one coordinate system to another.
+\begin{enumerate}
+    \item \textbf{Camera Frame (C)}: 
+    \begin{itemize}
+        \item Origin: Located at the camera's optical center.
+        \item Axes: Defined based on the camera's orientation. Typically, \( X_C \) and \( Y_C \) are in the image plane, and \( Z_C \) is perpendicular to this plane.
+    \end{itemize}
+    \item \textbf{IMU Frame (I)}:
+    \begin{itemize}
+        \item Origin: Located at the center of the drone.
+        \item Axes: \( X_I \) point forward, \( Y_I \) to the right, and \( Z_I \) downward relative to the drone's usual flight orientation.
+    \end{itemize}
+    \item \textbf{Drone Frame (D)}:
+    \begin{itemize}
+        \item Origin: Located at the center of rigid body created in motion capture system.
+    \end{itemize}
+
+    \item \textbf{World Frame (W)}: 
+    \begin{itemize}
+        \item A fixed, global coordinate system was defined by motion capture system and used as a reference frame.
+        \item Provide precise position and orientation of drone frame.
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Transformation Matrices}
+
+Transformation from the camera frame to the drone frame, and then to the world frame, involves two steps:
+
+\begin{enumerate}
+    \item \textbf{Camera to Drone (CD)}: 
+    \begin{itemize}
+        \item Rotation Matrix (\( R_{CD} \)) and Translation Vector (\( \vec{t}_{CD} \)).
+        \item Transformation Matrix \( T_{CD} = \begin{pmatrix} R_{CD} & \vec{t}_{CD} \\ 0 & 1 \end{pmatrix} \).
+    \end{itemize}
+
+    \item \textbf{Drone to World (DW)}:
+    \begin{itemize}
+        \item Rotation Matrix (\( R_{DW} \)) and Translation Vector (\( \vec{t}_{DW} \)).
+        \item Transformation Matrix \( T_{DW} = \begin{pmatrix} R_{DW} & \vec{t}_{DW} \\ 0 & 1 \end{pmatrix} \).
+    \end{itemize}
+\end{enumerate}
+
+Transformation from the IMU frame to the drone frame, and then to the world frame, involves two steps:
+
+\begin{enumerate}
+    \item \textbf{IMU to Drone (ID)}: 
+    \begin{itemize}
+        \item Since the IMU Frame is parallel to the Camera Frame, the transformation matrix is often similar or identical to the Camera to Drone transformation.
+        \item Rotation Matrix (\( R_{ID} \)) and Translation Vector (\( \vec{t}_{ID} \)).
+        \item Transformation Matrix \( T_{ID} = \begin{pmatrix} R_{ID} & \vec{t}_{ID} \\ 0 & 1 \end{pmatrix} \).
+    \end{itemize}
+
+    \item \textbf{Drone to World (DW)}:
+    \begin{itemize}
+        \item Rotation Matrix (\( R_{DW} \)) and Translation Vector (\( \vec{t}_{DW} \)).
+        \item Transformation Matrix \( T_{DW} = \begin{pmatrix} R_{DW} & \vec{t}_{DW} \\ 0 & 1 \end{pmatrix} \).
+    \end{itemize}
+\end{enumerate}
+
+To find the transformation from the camera frame to the world frame, we multiply the two transformation matrices:
+\[ T_{CW} = T_{DW} \times T_{CD} \]
+
+\subsection{Homogeneous Coordinates}
+
+For a point \( P_C \) in the camera frame, its transformation to the world frame \( P_W \) is given by:
+\[ P_W = T_{CW} \times P_C \]
+For a point \( P_I \) in the IMU frame, its transformation to the world frame \( P_W \) is given by:
+\[ P_W = T_{IW} \times P_I \]
+
+\section{Convolutional Neural Network}
+\textbf{Overview of \acrshort{cnn}} \acrshort{cnn} have revolutionized the field of computer vision and spatial data analysis. Their ability to automatically and adaptively learn spatial hierarchies of features from input images or three-dimensional data makes them exceptionally suitable for tasks like image and video recognition, image classification, and medical image analysis. The core idea behind CNNs involves the use of convolutional layers, which apply convolution operations to the input, passing the result to the next layer. This process results in the network's ability to learn increasingly complex features as we go deeper into the network.
+
+\textbf{TensorFlow Framework}
+TensorFlow, developed by the Google Brain team, is a cornerstone in the field of machine learning and deep learning. It offers a comprehensive, flexible ecosystem of tools, libraries, and community resources that enables researchers to push the state-of-the-art in \acrfull{ml}, and developers to easily build and deploy ML-powered applications. 
+
+\section{Inertial Measurement Unit}
+
+\textbf{Drift Error} Also known as bias drift, is a type of error in IMU sensors that results in a gradual deviation from the true measurement over time. This error is particularly prominent in gyroscopes, where it manifests as a slow change in the angular velocity reading, even when the UAV is stationary. Drift error can be caused by various factors, including changes in temperature, sensor aging, and manufacturing inconsistencies. In the context of pose estimation, drift error accumulates over time, leading to increasing inaccuracies in orientation estimates, which subsequently affect the calculated position.
+
+
+\textbf{Noise Error} In IMU sensors, it is typically characterized by random fluctuations in the sensor readings, which arise from a variety of sources such as electronic noise, temperature variations, and sensor resolution limits. Unlike shift error, noise error is non-systematic and varies randomly over time. This type of error primarily impacts the precision of the measurements. Noise in accelerometer and gyroscope data can lead to inaccuracies in derived quantities like velocity and position, especially when integrating these measurements over time.
+
+\section{Extended Kalman Filter}
+
+This thesis present the formulation of an \acrfull{ekf} designed for state estimation in drone applications. The EKF is a nonlinear version of the classic Kalman Filter that linearizes about an estimate of the current mean and covariance. In our approach, the state vector is represented as \([x, y, z, \text{rx}, \text{ry}, \text{rz}, \text{vx}, \text{vy}, \text{vz}]\), where \(x, y, z\) are the position coordinates, \(\text{rx}, \text{ry}, \text{rz}\) could be orientation in Euler angles or a rotation vector format, and \(\text{vx}, \text{vy}, \text{vz}\) are the velocity components.
+
+\subsection{Initialization}
+
+The filter is initialized with the state covariance matrix \(P\), process noise covariance matrix \(Q\), and measurement noise covariance matrix \(R\). The matrices \(Q\) and \(R\) are initialized based on estimated variances for position, orientation, and velocity. The state vector is initialized as a zero vector of length 9, representing an initial guess at the true state.
+
+\subsection{Prediction Step}
+
+The prediction step involves updating the state vector using Inertial Measurement Unit (IMU) data, which includes acceleration and gyroscope readings. A bias correction is applied to both accelerometer and gyroscope data. The gravity vector is calculated and subtracted from the accelerometer readings to isolate the drone's acceleration. The drone's orientation is updated by integrating the gyroscope data. The rotation matrix from the IMU to the drone frame and from the drone frame to the world frame are used to transform the IMU readings to the world frame. The velocity and position states are updated by integrating the acceleration.
+
+The state covariance matrix \(P\) is also updated in this step using the state transition matrix \(F\), which is derived from the Jacobian of the state transition with respect to the state vector.
+
+\subsection{Update Step}
+
+In the update step, the filter incorporates visual measurements to refine the state estimates. The measurement update corrects the state estimate using a measurement residual, the Kalman gain, and the measurement matrix \(H\). The state covariance matrix \(P\) is also updated to reflect the new estimate's uncertainty.
+
+\subsection{Mathematical Formulation}
+
+The state prediction and update equations in the EKF framework are given as follows:
+
+\textbf{Prediction:}
+\begin{align*}
+\hat{x}_{k|k-1} &= f(\hat{x}_{k-1|k-1}, u_k) \\
+P_{k|k-1} &= F_k P_{k-1|k-1} F_k^T + Q_k
+\end{align*}
+
+\textbf{Update:}
+\begin{align*}
+y_k &= z_k - H_k \hat{x}_{k|k-1} \\
+S_k &= H_k P_{k|k-1} H_k^T + R_k \\
+K_k &= P_{k|k-1} H_k^T S_k^{-1} \\
+\hat{x}_{k|k} &= \hat{x}_{k|k-1} + K_k y_k \\
+P_{k|k} &= (I - K_k H_k) P_{k|k-1}
+\end{align*}
+
+Here, \(f\) represents the state transition function, \(u_k\) is the control input (IMU data), \(F_k\) is the state transition matrix, \(Q_k\) is the process noise covariance, \(z_k\) is the measurement, \(H_k\) is the measurement matrix, \(R_k\) is the measurement noise covariance, and \(K_k\) is the Kalman gain.
