@@ -26,7 +26,7 @@ def cam_to_world_rt(camera_position, camera_orientation, point_cloud):
         rot = np.dot(R_z, np.dot(R_y, R_x))
         return rot
 
-    # Camera to drone's center
+    # adjust
     camera_translation = np.array([-0.3, 0, 0])
     point_cloud = point_cloud + camera_translation
     # Rotation of -90 degrees around the x-axis in radians

@@ -5,11 +5,6 @@ import os
 import pandas as pd
 import csv
 
-'''
-Introduction:
-This script is used to generate the segments from images, depth images, and the segmentation data and save segments as csv files.
-'''
-
 class NumpyEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, (np.int64, np.int32, np.int16, np.int8)):

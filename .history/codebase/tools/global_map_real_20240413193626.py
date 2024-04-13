@@ -13,16 +13,6 @@ import open3d as o3d
 from tqdm import tqdm
 from filtering_pc  import cluster_and_filter_points
 
-'''
-Introduction:
-This script is used to generate the global map from the segmentation data and the global position data.
-images are used to generate the point cloud, and the global position data is used to adjust the position of the point cloud.
-mask from the segmentation data is used to generate the point cloud of each segment.
-
-:Check segments_generator.py for the crucial functions used in this script
-:Similar to the codebase/tools/save_segments.py and codebase/tools/save_segments_train.py
-'''
-
 path_train_position = '/Users/david/Documents/thesis/Thesis_code/data_collection/bag_all/fortrain/vrpn_client_node-HaoranDrone-pose.csv'
 path_global_position = '/Users/david/Documents/thesis/Thesis_code/data_collection/bag_all/forGlobalmap2/vrpn_client_node-HaoranDrone-pose.csv'
 path_test_position = '/Users/david/Documents/thesis/Thesis_code/data_collection/bag_all/fortesttest2/vrpn_client_node-HaoranDrone-pose.csv'

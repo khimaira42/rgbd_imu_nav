@@ -11,12 +11,6 @@ from cam_world_rt import cam_to_world_rt
 from sklearn.neighbors import KDTree
 import os
 from tqdm import tqdm
-
-'''
-Introduction:
-This script contains functions to get descriptors and match global descriptors with local descriptors.
-'''
-
 def get_global_info():
     # read config file
     configfile = "haoranDronev1.ini"

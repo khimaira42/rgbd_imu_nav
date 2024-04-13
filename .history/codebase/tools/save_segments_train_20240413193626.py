@@ -14,10 +14,6 @@ from tqdm import tqdm
 from filtering_pc  import cluster_and_filter_points
 import csv
 
-'''
-:Check global_map_real.py for more information
-'''
-
 # path_train_position = '/Users/david/Documents/thesis/Thesis_code/data_collection/bag_all/fortrain/vrpn_client_node-HaoranDrone-pose.csv'
 # path_global_position = '/Users/david/Documents/thesis/Thesis_code/data_collection/bag_all/forGlobalmap2/vrpn_client_node-HaoranDrone-pose.csv'
 path_test_position = '/Users/david/Documents/thesis/Thesis_code/data_collection/bag_all/fortesttest2/vrpn_client_node-HaoranDrone-pose.csv'

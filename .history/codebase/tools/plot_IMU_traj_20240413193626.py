@@ -2,12 +2,6 @@ from matplotlib import pyplot as plt
 import pandas as pd
 import numpy as np
 from ekf import ExtendedKalmanFilter
-
-'''
-Introduction:
-This script is used to plot the trajectory of the drone using the IMU data and the ground truth data.
-'''
-
 def calculate_trajectory(time_array, gyro_array, accel_array, initial_position, initial_orientation):
     """
     Calculate the trajectory (position and orientation) based on arrays of IMU data.
@@ -259,3 +253,65 @@ ax.plot(states[:,0], states[:,1], states[:,2], label='drone trajectory KF')
 ax.plot(df_gt['pose.position.x'],df_gt['pose.position.y'],df_gt['pose.position.z'], label='ground truth')
 ax.legend()
 plt.show()
+
+# # linear regression
+# from sklearn.linear_model import LinearRegression
+# from sklearn.metrics import mean_squared_error, r2_score
+
+
+# from scipy.spatial.transform import Rotation as R
+
+# def calculate_rotation_matrix(data1, data2):
+#     """
+#     Calculates the rotation matrix to align data2 with data1.
+
+#     Args:
+#     data1 (np.array): First set of 3D points.
+#     data2 (np.array): Second set of 3D points.
+
+#     Returns:
+#     np.array: Rotation matrix.
+#     """
+#     # Perform linear regression to find the best fit line for each dataset
+#     reg1 = LinearRegression().fit(data1[:, :-1], data1[:, -1])
+#     reg2 = LinearRegression().fit(data2[:, :-1], data2[:, -1])
+
+#     # Calculate direction vectors (gradients) from the regression coefficients
+#     dir1 = np.array([reg1.coef_[0], reg1.coef_[1], 1])
+#     dir2 = np.array([reg2.coef_[0], reg2.coef_[1], 1])
+
+#     # Normalize direction vectors
+#     dir1 /= np.linalg.norm(dir1)
+#     dir2 /= np.linalg.norm(dir2)
+
+#     # Calculate the cross product and dot product
+#     v = np.cross(dir1, dir2)
+#     c = np.dot(dir1, dir2)
+
+#     # Calculate skew-symmetric cross-product matrix of v
+#     vx = np.array([[0, -v[2], v[1]], [v[2], 0, -v[0]], [-v[1], v[0], 0]])
+
+#     # Calculate the rotation matrix
+#     rot_matrix = np.eye(3) + vx + vx.dot(vx) * ((1 - c) / (np.linalg.norm(v)**2))
+
+#     return rot_matrix
+
+# # Assuming positions, states, and df_gt are the input 3D data arrays
+# # Translate all data to start from the same point
+# positions -= positions[0]
+# states -= states[0]
+# df_np = np.array([df_gt['pose.position.x'], df_gt['pose.position.y'], df_gt['pose.position.z']]).reshape(3, -1).T
+# df_np -= df_np[0]
+
+# # Calculate rotation matrices
+# rot_matrix_pos_states = calculate_rotation_matrix(positions, states)
+# rot_matrix_pos_gt = calculate_rotation_matrix(positions, df_np)
+# rot_matrix_gt_Pos = calculate_rotation_matrix(df_np, positions)
+
+# rot_matrix_states_gt = calculate_rotation_matrix(states, df_np)
+
+# print('all rotation matrix')
+# print(rot_matrix_pos_states)
+# print(rot_matrix_pos_gt)
+# print(rot_matrix_gt_Pos)
+# print(rot_matrix_states_gt)

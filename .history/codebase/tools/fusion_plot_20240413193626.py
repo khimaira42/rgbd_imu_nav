@@ -1,12 +1,7 @@
-
+# save the position_draw
 import numpy as np
 import os
 import pandas as pd
-
-'''
-This file is used to plot the fusion data and the ground truth data
-'''
-
 path = '/Users/david/Documents/thesis/Thesis_code/data_fusion_plot/23-32_fusion1'
 position_draw = np.load(os.path.join(path,'position_draw.npy'))
 

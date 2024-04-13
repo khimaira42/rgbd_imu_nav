@@ -10,7 +10,6 @@ def cluster_and_filter_points(points,size_threshold):
     :param min_samples: The number of samples (or total weight) in a neighborhood for a point to be considered as a core point.
     :param size_threshold: Minimum cluster size to keep.
     :return: Filtered array of points.
-    :(not used in the codebase, but it is a good practice)
     """
     # Parameters for DBSCAN
     eps = 0.1  # Maximum distance between two samples

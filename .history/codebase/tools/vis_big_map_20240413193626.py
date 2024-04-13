@@ -2,10 +2,6 @@ import open3d as o3d
 import numpy as np
 import os
 
-'''
-:Visualize the big map
-'''
-
 path_global='/Users/david/Documents/thesis/Thesis_code/data_collection/global_data'
 path_global_pcd = os.path.join(path_global, 'pcd')
 #path pcd_segments

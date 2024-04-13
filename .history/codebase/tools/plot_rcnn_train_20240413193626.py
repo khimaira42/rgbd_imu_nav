@@ -1,9 +1,3 @@
-
-'''
-Introduction:
-Evaluate the training process of rcnn model by plotting the loss, accuracy, and learning rate over epochs.
-'''
-
 # Adjusting the parsing to handle two data points per epoch and plotting mid points
 import numpy as np
 import matplotlib.pyplot as plt

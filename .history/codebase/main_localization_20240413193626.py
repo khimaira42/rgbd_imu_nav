@@ -8,11 +8,6 @@ from tools.ekf import ExtendedKalmanFilter
 from seg_localization import get_local_segments, matching_global_descriptors, get_global_info
 import math
 
-'''
-Introduction:
-This script is used to localize the drone using the Extended Kalman Filter (EKF) with the IMU and Visual data.
-'''
-
 def calculate_trajectory(time_array, gyro_array, accel_array, initial_position, initial_orientation):
     """
     Calculate the trajectory (position and orientation) based on arrays of IMU data.

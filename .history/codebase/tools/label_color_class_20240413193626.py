@@ -1,8 +1,5 @@
 # label_colors.py
-'''
-Introduction:
-This script defines the classes, colors, and mappings for the segmentation labels.
-'''
+
 # Define the classes
 classes = (
     'Box',

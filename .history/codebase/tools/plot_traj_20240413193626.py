@@ -1,11 +1,7 @@
 import numpy as np
+
 import pandas as pd
 import matplotlib.pyplot as plt
-
-'''
-Introduction:
-This script is used to plot the 3D trajectory (ground truth from optical track system) of the drone in the world frame.
-'''
 
 path_train_position = '/Users/david/Documents/thesis/Thesis_code/data_collection/bag_all/fortrain/vrpn_client_node-HaoranDrone-pose.csv'
 path_train_global = '/Users/david/Documents/thesis/Thesis_code/data_collection/bag_all/forGlobalmap2/vrpn_client_node-HaoranDrone-pose.csv'

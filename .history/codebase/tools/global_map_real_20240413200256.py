@@ -20,7 +20,6 @@ images are used to generate the point cloud, and the global position data is use
 mask from the segmentation data is used to generate the point cloud of each segment.
 
 :Check segments_generator.py for the crucial functions used in this script
-:Similar to the codebase/tools/save_segments.py and codebase/tools/save_segments_train.py
 '''
 
 path_train_position = '/Users/david/Documents/thesis/Thesis_code/data_collection/bag_all/fortrain/vrpn_client_node-HaoranDrone-pose.csv'

@@ -6,7 +6,7 @@ class ExtendedKalmanFilter:
         # State vector: [x, y, z, rx, ry, rz, vx, vy, vz] 
         # rx, ry, rz could be orientation in Euler angles or a rotation vector format
         # Initialize Q with estimated variances
-        # These are example values; need to adjust them based on drone's characteristics
+        # These are example values; you'll need to adjust them based on your drone's characteristics
         var_position = 0.1  # Variance for position
         var_orientation = 0.01  # Variance for orientation (roll, pitch, yaw)
         var_velocity = 0.2  # Variance for velocity
@@ -28,7 +28,7 @@ class ExtendedKalmanFilter:
         self.rot_drone_to_world = np.eye(3)  # Rotation matrix from drone frame to world frame
     def predict(self, acc, gyro, dt):
          # Update state [x, y, z,  roll, pitch, yaw, vx, vy, vz] using IMU data
-        # imu to drone, need to adjust them based on drone's characteristics
+        # imu to drone
         # rot_imu_to_drone = np.array([[ 0,  0, -1],
         #                             [0,  1,  0],
         #                             [1,  0,  0]])#[0,-90,0]
@@ -53,7 +53,11 @@ class ExtendedKalmanFilter:
         #                             [ 0.        , -0.57357644,  0.81915204]])
 
         # add bias
+        #gyro_bias = np.array([0.0020178240054855253, 0.0017592206368581425, 0.0017427009552286577]).reshape(-1)
         # 1 pitch 2 roll 3 yaw
+        #gyro_bias = np.array([0.0020178240054855253, 0.0017592206368581425, 0.0017427009552286577]).reshape(-1)
+        #acc_bias = np.array([0.28478655780245, -0.024718655019298263, -9.848971270850001]).reshape(-1)
+        #acc_bias = np.array([0.28478655780245, -0.024718655019298263, -9.828971270850001]).reshape(-1)
         gyro_bias = [0.001851052, 0.0017697088, 0.0019698385]  # Replace with actual values
         acc_bias = [0.015662003, 0.056381565, -0.02278524]  
         acc = acc - acc_bias
